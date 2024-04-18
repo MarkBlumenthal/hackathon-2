@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Page</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <h1>Welcome, User!</h1>
+
+    <div id="user-details">
+        <h2>Your Details</h2>
+        <form id="details-form">
+            <input type="number" id="height" placeholder="Height (in cm)" required>
+            <input type="number" id="age" placeholder="Age" required>
+            <input type="number" id="current-weight" placeholder="Current Weight (in kg)" required>
+            <input type="number" id="desired-weight" placeholder="Desired Weight (in kg)" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div id="diet-choice">
+        <h2>Choose Your Diet</h2>
+        <button id="carb-diet">All Carb Diet</button>
+        <button id="dessert-diet">All Dessert Diet</button>
+    </div>
+
+    <div id="tables">
+        <table id="meal-plan">
+            <!-- Meal plan data will go here -->
+        </table>
+
+        <table id="exercise-plan">
+            <!-- Exercise plan data will go here -->
+        </table>
+
+        <table id="progress">
+            <!-- Progress data will go here -->
+        </table>
+    </div>
+
+    <button id="logout">Logout</button>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

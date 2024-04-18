@@ -39,4 +39,33 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
       alert(data.message);
     }
   });
+
+  // Fetch and display user profile
+async function fetchUserProfile(username) {
+    const response = await fetch('/profile', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username }),
+    });
+    const data = await response.json();
+    if (response.ok) {
+      document.getElementById('username').textContent = data.username;
+      document.getElementById('height').value = data.height;
+      document.getElementById('age').value = data.age;
+      document.getElementById('currentWeight').value = data.currentWeight;
+      document.getElementById('desiredWeight').value = data.desiredWeight;
+      document.getElementById('dietPreference').value = data.dietPreference;
+    } else {
+      alert(data.message);
+    }
+  }
+  
+  // Call this function when the user logs in
+  // You'll need to replace 'username' with the actual username
+  fetchUserProfile('username');
+
+  
+
   

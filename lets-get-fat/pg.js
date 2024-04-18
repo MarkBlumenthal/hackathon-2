@@ -6,12 +6,13 @@ const port = 3000;
 
 // Database connection
 const pool = new Pool({
-  user: 'your_username',
-  host: 'localhost',
-  database: 'your_database',
-  password: 'your_password',
-  port: 5432,
-});
+    user: 'tasks_owner', 
+    host: 'ep-twilight-queen-a24z353q.eu-central-1.aws.neon.tech', 
+    database: 'letsgetfat', 
+    password: '************', 
+    port: 5432,
+  });
+  
 
 app.use(express.json()); // for parsing application/json
 

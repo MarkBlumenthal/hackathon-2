@@ -4,60 +4,116 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> <!-- jQuery for AJAX -->
 </head>
-<body>
-  <h1>Welcome, <%= user.name %>!</h1>
-  <form id="profileForm">
+<body class="container">
+  <h1 class="mt-4">Welcome, <%= user.name %>!</h1>
+  <form id="profileForm" class="mb-3">
     <input type="hidden" name="id" value="<%= user.id %>">
-    <label for="age">Age:</label>
-    <input type="number" id="age" name="age" required>
-    <label for="height">Height (in cm):</label>
-    <input type="number" id="height" name="height" required>
-    <label for="current_weight">Current Weight (in kg):</label>
-    <input type="number" id="current_weight" name="current_weight" required>
-    <label for="desired_weight">Desired Weight (in kg):</label>
-    <input type="number" id="desired_weight" name="desired_weight" required>
-    <button type="submit">Submit</button>
+    <div class="mb-3">
+      <label for="age" class="form-label">Age:</label>
+      <input type="number" id="age" name="age" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label for="height" class="form-label">Height (in cm):</label>
+      <input type="number" id="height" name="height" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label for="current_weight" class="form-label">Current Weight (in kg):</label>
+      <input type="number" id="current_weight" name="current_weight" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label for="desired_weight" class="form-label">Desired Weight (in kg):</label>
+      <input type="number" id="desired_weight" name="desired_weight" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
   </form>
-  <div id="successMessage" style="display:none;">
+  <div id="successMessage" style="display:none;" class="alert alert-success">
     Profile updated successfully!
-    <button id="allCarbDiet">All Carb Diet</button>
-    <button id="allDessertDiet">All Dessert Diet</button>
+    <button id="allCarbDiet" class="btn btn-outline-primary">All Carb Diet</button>
+    <button id="allDessertDiet" class="btn btn-outline-secondary">All Dessert Diet</button>
   </div>
 
   <!-- diet plan tables -->
-<div id="allCarbDietTable" style="display:none;">
+  <div id="allCarbDietTable" style="display:none;">
     <h2>All Carb Diet Plan</h2>
-    <table>
-      <tr><th>Day</th><th>Meal</th></tr>
-      <tr><td>Day 1</td><td>Pasta</td></tr>
-      <tr><td>Day 2</td><td>Bread</td></tr>
-      <tr><td>Day 3</td><td>Rice</td></tr>
-      <tr><td>Day 4</td><td>Rice</td></tr>
-      <tr><td>Day 5</td><td>Rice</td></tr>
-      <tr><td>Day 6</td><td>Rice</td></tr>
-      <tr><td>Day 7</td><td>Rice</td></tr>
+    <table class="table">
+      <thead>
+        <tr><th>Day</th><th>Meal</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Day 1</td><td>Pasta</td></tr>
+        <tr><td>Day 2</td><td>Bread</td></tr>
+        <tr><td>Day 3</td><td>Bread</td></tr>
+        <tr><td>Day 4</td><td>Bread</td></tr>
+        <tr><td>Day 5</td><td>Bread</td></tr>
+        <tr><td>Day 6</td><td>Bread</td></tr>
+        <tr><td>Day 7</td><td>Bread</td></tr> 
+      </tbody>
     </table>
   </div>
   
   <div id="allDessertDietTable" style="display:none;">
     <h2>All Dessert Diet Plan</h2>
-    <table>
-      <tr><th>Day</th><th>Meal</th></tr>
-      <tr><td>Day 1</td><td>Cake</td></tr>
-      <tr><td>Day 2</td><td>Ice Cream</td></tr>
-      <tr><td>Day 3</td><td>Chocolate</td></tr>
-      <tr><td>Day 4</td><td>Chocolate</td></tr>
-      <tr><td>Day 5</td><td>Chocolate</td></tr>
-      <tr><td>Day 6</td><td>Chocolate</td></tr>
-      <tr><td>Day 7</td><td>Chocolate</td></tr>
+    <table class="table">
+      <thead>
+        <tr><th>Day</th><th>Meal</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Day 1</td><td>Cake</td></tr>
+        <tr><td>Day 2</td><td>Ice Cream</td></tr>
+        <tr><td>Day 2</td><td>Ice Cream</td></tr>
+        <tr><td>Day 2</td><td>Ice Cream</td></tr>
+        <tr><td>Day 2</td><td>Ice Cream</td></tr>
+        <tr><td>Day 2</td><td>Ice Cream</td></tr>
+        <tr><td>Day 2</td><td>Ice Cream</td></tr>  
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Exercise Plan for All Carb Diet -->
+<div id="allCarbExerciseTable" style="display:none;">
+    <h2>All Carb Exercise Plan</h2>
+    <table class="table">
+      <thead>
+        <tr><th>Day</th><th>Exercise</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Day 1</td><td>30 min run</td></tr>
+        <tr><td>Day 2</td><td>15 min cycling</td></tr>
+        <tr><td>Day 3</td><td>15 min cycling</td></tr>
+        <tr><td>Day 4</td><td>15 min cycling</td></tr>
+        <tr><td>Day 5</td><td>15 min cycling</td></tr>
+        <tr><td>Day 6</td><td>15 min cycling</td></tr>
+        <tr><td>Day 7</td><td>15 min cycling</td></tr> 
+      </tbody>
     </table>
   </div>
   
-
+  <!-- Exercise Plan for All Dessert Diet -->
+  <div id="allDessertExerciseTable" style="display:none;">
+    <h2>All Dessert Exercise Plan</h2>
+    <table class="table">
+      <thead>
+        <tr><th>Day</th><th>Exercise</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Day 1</td><td>20 min yoga</td></tr>
+        <tr><td>Day 2</td><td>30 min brisk walk</td></tr>
+        <tr><td>Day 3</td><td>30 min brisk walk</td></tr>
+        <tr><td>Day 4</td><td>30 min brisk walk</td></tr>
+        <tr><td>Day 5</td><td>30 min brisk walk</td></tr>
+        <tr><td>Day 6</td><td>30 min brisk walk</td></tr>
+        <tr><td>Day 7</td><td>30 min brisk walk</td></tr>
+      </tbody>
+    </table>
+  </div>
+  
+  
   <script>
     $(document).ready(function(){
+      // Handling the profile update form submission
       $('#profileForm').on('submit', function(e){
         e.preventDefault(); // Prevent default form submission
         var formData = $(this).serialize(); // Serialize form data
@@ -74,8 +130,8 @@
           }
         });
       });
-
-      // Handle diet preference buttons
+  
+      // Handling diet preference button clicks
       $('#allCarbDiet, #allDessertDiet').click(function() {
         var dietPreference = $(this).attr('id') === 'allCarbDiet' ? 'All Carb' : 'All Dessert';
         $.ajax({
@@ -84,6 +140,14 @@
           data: { id: '<%= user.id %>', diet: dietPreference },
           success: function(response) {
             alert('Diet preference updated successfully!');
+            // Toggle visibility of both diet and exercise tables based on selection
+            if (dietPreference === 'All Carb') {
+              $('#allDessertDietTable, #allDessertExerciseTable').hide();
+              $('#allCarbDietTable, #allCarbExerciseTable').show();
+            } else {
+              $('#allCarbDietTable, #allCarbExerciseTable').hide();
+              $('#allDessertDietTable, #allDessertExerciseTable').show();
+            }
           },
           error: function() {
             alert('Failed to update diet preference. Please try again.');
@@ -91,30 +155,8 @@
         });
       });
     });
-
-    $('#allCarbDiet, #allDessertDiet').click(function() {
-  var dietPreference = $(this).attr('id') === 'allCarbDiet' ? 'All Carb' : 'All Dessert';
-  $.ajax({
-    url: '/update-diet',
-    type: 'POST',
-    data: { id: '<%= user.id %>', diet: dietPreference },
-    success: function(response) {
-      alert('Diet preference updated successfully!');
-      if (dietPreference === 'All Carb') {
-        $('#allDessertDietTable').hide();
-        $('#allCarbDietTable').show();
-      } else {
-        $('#allCarbDietTable').hide();
-        $('#allDessertDietTable').show();
-      }
-    },
-    error: function() {
-      alert('Failed to update diet preference. Please try again.');
-    }
-  });
-});
-
   </script>
+  
  
 <form action="/logout" method="post">
     <button type="submit">Logout</button>

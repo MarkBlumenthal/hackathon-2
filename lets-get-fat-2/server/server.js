@@ -94,7 +94,8 @@ const createTables = async () => {
 };
 
 // Routes for user authentication and management
-app.post('/register', async (req, res) => {
+app.post('/user/register', async (req, res) => {
+    console.log(req.body);
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const result = await pool.query(
@@ -108,7 +109,7 @@ app.post('/register', async (req, res) => {
     }
 });
 
-app.post('/login', async (req, res) => {
+app.post('/user/login', async (req, res) => {
     try {
         const { rows } = await pool.query(
             'SELECT id, password FROM users WHERE username = $1',

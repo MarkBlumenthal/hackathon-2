@@ -26,6 +26,36 @@
     <button id="allDessertDiet">All Dessert Diet</button>
   </div>
 
+  <!-- diet plan tables -->
+<div id="allCarbDietTable" style="display:none;">
+    <h2>All Carb Diet Plan</h2>
+    <table>
+      <tr><th>Day</th><th>Meal</th></tr>
+      <tr><td>Day 1</td><td>Pasta</td></tr>
+      <tr><td>Day 2</td><td>Bread</td></tr>
+      <tr><td>Day 3</td><td>Rice</td></tr>
+      <tr><td>Day 4</td><td>Rice</td></tr>
+      <tr><td>Day 5</td><td>Rice</td></tr>
+      <tr><td>Day 6</td><td>Rice</td></tr>
+      <tr><td>Day 7</td><td>Rice</td></tr>
+    </table>
+  </div>
+  
+  <div id="allDessertDietTable" style="display:none;">
+    <h2>All Dessert Diet Plan</h2>
+    <table>
+      <tr><th>Day</th><th>Meal</th></tr>
+      <tr><td>Day 1</td><td>Cake</td></tr>
+      <tr><td>Day 2</td><td>Ice Cream</td></tr>
+      <tr><td>Day 3</td><td>Chocolate</td></tr>
+      <tr><td>Day 4</td><td>Chocolate</td></tr>
+      <tr><td>Day 5</td><td>Chocolate</td></tr>
+      <tr><td>Day 6</td><td>Chocolate</td></tr>
+      <tr><td>Day 7</td><td>Chocolate</td></tr>
+    </table>
+  </div>
+  
+
   <script>
     $(document).ready(function(){
       $('#profileForm').on('submit', function(e){
@@ -61,6 +91,29 @@
         });
       });
     });
+
+    $('#allCarbDiet, #allDessertDiet').click(function() {
+  var dietPreference = $(this).attr('id') === 'allCarbDiet' ? 'All Carb' : 'All Dessert';
+  $.ajax({
+    url: '/update-diet',
+    type: 'POST',
+    data: { id: '<%= user.id %>', diet: dietPreference },
+    success: function(response) {
+      alert('Diet preference updated successfully!');
+      if (dietPreference === 'All Carb') {
+        $('#allDessertDietTable').hide();
+        $('#allCarbDietTable').show();
+      } else {
+        $('#allCarbDietTable').hide();
+        $('#allDessertDietTable').show();
+      }
+    },
+    error: function() {
+      alert('Failed to update diet preference. Please try again.');
+    }
+  });
+});
+
   </script>
  
 <form action="/logout" method="post">

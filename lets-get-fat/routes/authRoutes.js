@@ -16,4 +16,7 @@ router.get('/profile', authController.showProfile);
 // Route for updating user profile information
 router.post('/update-profile', authController.updateProfile);
 
+router.post('/update-diet', authController.updateDiet);
+
+
 module.exports = router;

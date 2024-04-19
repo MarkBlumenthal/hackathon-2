@@ -20,7 +20,11 @@
     <input type="number" id="desired_weight" name="desired_weight" required>
     <button type="submit">Submit</button>
   </form>
-  <div id="successMessage" style="display:none;">Profile updated successfully!</div>
+  <div id="successMessage" style="display:none;">
+    Profile updated successfully!
+    <button id="allCarbDiet">All Carb Diet</button>
+    <button id="allDessertDiet">All Dessert Diet</button>
+  </div>
 
   <script>
     $(document).ready(function(){
@@ -33,10 +37,26 @@
           data: formData,
           success: function(response) {
             $('#profileForm').hide(); // Hide form on success
-            $('#successMessage').show(); // Show success message
+            $('#successMessage').show(); // Show success message and buttons
           },
           error: function() {
             alert('Failed to update profile. Please try again.');
+          }
+        });
+      });
+
+      // Handle diet preference buttons
+      $('#allCarbDiet, #allDessertDiet').click(function() {
+        var dietPreference = $(this).attr('id') === 'allCarbDiet' ? 'All Carb' : 'All Dessert';
+        $.ajax({
+          url: '/update-diet',
+          type: 'POST',
+          data: { id: '<%= user.id %>', diet: dietPreference },
+          success: function(response) {
+            alert('Diet preference updated successfully!');
+          },
+          error: function() {
+            alert('Failed to update diet preference. Please try again.');
           }
         });
       });
@@ -44,4 +64,5 @@
   </script>
 </body>
 </html>
+
 

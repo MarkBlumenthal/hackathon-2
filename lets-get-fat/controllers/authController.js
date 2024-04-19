@@ -73,6 +73,18 @@ exports.updateProfile = async (req, res) => {
       res.status(500).json({ error: 'Failed to update profile' });
     }
   };
+
+  
+  exports.updateDiet = async (req, res) => {
+    const { id, diet } = req.body;
+    try {
+      await db.query('UPDATE users SET diet_preference = $1 WHERE id = $2', [diet, id]);
+      res.json({ message: 'Diet preference updated successfully' });
+    } catch (error) {
+      console.error('Error updating diet preference:', error);
+      res.status(500).json({ error: 'Failed to update diet preference' });
+    }
+  };
   
 
 

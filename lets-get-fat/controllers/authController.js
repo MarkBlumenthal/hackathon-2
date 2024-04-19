@@ -59,19 +59,20 @@ exports.showProfile = (req, res) => {
     res.render('profile', { user: req.session.user });
   };
   
-  // Update user profile
-  exports.updateProfile = async (req, res) => {
+// Update user profile
+exports.updateProfile = async (req, res) => {
     const { id, age, height, current_weight, desired_weight } = req.body;
     try {
       await db.query(
         'UPDATE users SET age = $1, height = $2, current_weight = $3, desired_weight = $4 WHERE id = $5',
         [age, height, current_weight, desired_weight, id]
       );
-      res.send('Profile updated successfully');
+      res.json({ message: 'Profile updated successfully' }); // Send JSON response
     } catch (error) {
       console.error('Error updating profile:', error);
-      res.status(500).send('Failed to update profile');
+      res.status(500).json({ error: 'Failed to update profile' });
     }
   };
+  
 
 

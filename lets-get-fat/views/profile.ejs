@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Profile</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> <!-- jQuery for AJAX -->
 </head>
 <body>
   <h1>Welcome, <%= user.name %>!</h1>
-  <form action="/update-profile" method="post">
+  <form id="profileForm">
     <input type="hidden" name="id" value="<%= user.id %>">
     <label for="age">Age:</label>
     <input type="number" id="age" name="age" required>
@@ -19,5 +20,28 @@
     <input type="number" id="desired_weight" name="desired_weight" required>
     <button type="submit">Submit</button>
   </form>
+  <div id="successMessage" style="display:none;">Profile updated successfully!</div>
+
+  <script>
+    $(document).ready(function(){
+      $('#profileForm').on('submit', function(e){
+        e.preventDefault(); // Prevent default form submission
+        var formData = $(this).serialize(); // Serialize form data
+        $.ajax({
+          url: '/update-profile',
+          type: 'POST',
+          data: formData,
+          success: function(response) {
+            $('#profileForm').hide(); // Hide form on success
+            $('#successMessage').show(); // Show success message
+          },
+          error: function() {
+            alert('Failed to update profile. Please try again.');
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
+

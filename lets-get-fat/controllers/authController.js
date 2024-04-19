@@ -14,13 +14,15 @@ exports.register = async (req, res) => {
             return res.render('index', { registerErrorMessage: 'Sorry, but you are already a client.' });
         }
 
-        await db.query('INSERT INTO users (name, username, email, password) VALUES ($1, $2, $3, $4)', [name, username, email, hashedPassword]);
-        res.send(`Welcome ${name}`);
+        const newUser = await db.query('INSERT INTO users (name, username, email, password) VALUES ($1, $2, $3, $4) RETURNING *', [name, username, email, hashedPassword]);
+        req.session.user = newUser.rows[0]; // Store user information in session
+        res.redirect('/profile'); // Redirect to profile page after registration
     } catch (error) {
         console.error('Registration error:', error);
         res.status(500).render('index', { registerErrorMessage: 'Error in registration process' });
     }
 };
+
 
 
 

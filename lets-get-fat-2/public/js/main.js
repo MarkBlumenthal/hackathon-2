@@ -60,6 +60,41 @@ function handleRegistration(event) {
     
 }
 
+// Assuming your user-specific page URL ends with 'user.html', adjust as necessary
+if (userId && window.location.pathname.includes('user.html')) {
+    // Handle details form submission
+    var detailsForm = document.getElementById('details-form');
+    if (detailsForm) {
+        detailsForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            var height = document.getElementById('height').value;
+            var age = document.getElementById('age').value;
+            var currentWeight = document.getElementById('current-weight').value;
+            var desiredWeight = document.getElementById('desired-weight').value;
+            fetch(`/user/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ height: height, age: age, current_weight: currentWeight, desired_weight: desiredWeight })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('User details updated');
+                } else {
+                    console.error('Error updating user details:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+    // Fetch user details and other data as previously detailed in your script
+}
+
+
 // Add event listeners if elements exist
 var loginForm = document.getElementById('login-form');
 if (loginForm) {
@@ -70,6 +105,29 @@ var registerForm = document.getElementById('register-form');
 if (registerForm) {
     registerForm.addEventListener('submit', handleRegistration);
 }
+
+// Event listeners for diet buttons
+document.getElementById('allCarbDietButton').addEventListener('click', function() {
+    fetchDietPlans('carb');
+});
+
+document.getElementById('allDessertDietButton').addEventListener('click', function() {
+    fetchDietPlans('dessert');
+});
+
+function fetchDietPlans(dietType) {
+    // Fetch meal plans based on the diet type
+    fetch(`/user/${userId}/meal-plans?dietType=${dietType}`)
+        .then(response => response.json())
+        .then(mealPlans => {
+            console.log(`${dietType} Meal plans:`, mealPlans);
+            // Additional logic to display meal plans
+        })
+        .catch(error => console.error('Error fetching meal plans:', error));
+
+    // Fetch exercise plans similarly if needed
+}
+
 
 // User-specific scripts should only run if userId exists and on appropriate pages
 if (userId) {
@@ -138,4 +196,7 @@ if (userId) {
         })
         .catch((error) => console.error('Error fetching progress:', error));
 }
+
+
+
 

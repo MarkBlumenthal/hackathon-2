@@ -158,16 +158,23 @@ app.put('/user/:id', async (req, res) => {
     }
 });
 
-// Routes for meal plans and exercise plans
+
+// Get meal plans with optional diet type filtering
 app.get('/user/:id/meal-plans', async (req, res) => {
+    const dietType = req.query.dietType;  // Capture optional diet type from query parameters
     try {
-        const { rows } = await pool.query('SELECT * FROM meal_plans WHERE user_id = $1', [req.params.id]);
+        const query = dietType ? 
+            'SELECT * FROM meal_plans WHERE user_id = $1 AND diet_type = $2' :
+            'SELECT * FROM meal_plans WHERE user_id = $1';
+        const params = dietType ? [req.params.id, dietType] : [req.params.id];
+        const { rows } = await pool.query(query, params);
         res.json(rows);
     } catch (err) {
         console.error('Get meal plans error', err);
         res.status(500).json({ error: 'Failed to retrieve meal plans' });
     }
 });
+
 
 app.post('/user/:id/meal-plan', async (req, res) => {
     try {
@@ -197,7 +204,7 @@ app.post('/user/:id/exercise-plan', async (req, res) => {
     try {
         const { exercise, day_of_week } = req.body;
         await pool.query(
-            'INSERT INTO exercise plans (user_id, exercise, day_of_week) VALUES ($1, $2, $3)',
+            'INSERT INTO exercise_plans (user_id, exercise, day_of_week) VALUES ($1, $2, $3)',
             [req.params.id, exercise, day_of_week]
         );
         res.status(201).send();
@@ -206,6 +213,17 @@ app.post('/user/:id/exercise-plan', async (req, res) => {
         res.status(500).json({ error: 'Failed to update the exercise plan' });
     }
 });
+
+app.get('/user/:id/progress', async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT * FROM progress WHERE user_id = $1', [req.params.id]);
+        res.json(rows);
+    } catch (err) {
+        console.error('Get progress error', err);
+        res.status(500).json({ error: 'Failed to retrieve progress' });
+    }
+});
+
 
 // Start the server
 app.listen(port, () => {

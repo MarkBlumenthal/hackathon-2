@@ -23,6 +23,7 @@ exports.register = async (req, res) => {
 };
 
 
+
 // Login User
 exports.login = async (req, res) => {
     const { username, password } = req.body;
@@ -40,12 +41,37 @@ exports.login = async (req, res) => {
             return res.render('index', { errorMessage: 'Sorry, incorrect credentials.' });
         }
 
-        res.send(`Welcome back, ${user.name}`);
+        // Correctly place session and redirect inside the try block
+        req.session.user = user;  // Store user information in session
+        res.redirect('/profile');  // Redirect to profile page
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).render('index', { errorMessage: 'Login error' });
     }
 };
 
+
+
+
+// Display user profile
+exports.showProfile = (req, res) => {
+    // Assuming user data is stored in session or passed after login
+    res.render('profile', { user: req.session.user });
+  };
+  
+  // Update user profile
+  exports.updateProfile = async (req, res) => {
+    const { id, age, height, current_weight, desired_weight } = req.body;
+    try {
+      await db.query(
+        'UPDATE users SET age = $1, height = $2, current_weight = $3, desired_weight = $4 WHERE id = $5',
+        [age, height, current_weight, desired_weight, id]
+      );
+      res.send('Profile updated successfully');
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      res.status(500).send('Failed to update profile');
+    }
+  };
 
 

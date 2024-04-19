@@ -10,4 +10,10 @@ router.get('/', (req, res) => {
     res.render('index');
 });
 
+// Route for displaying the user profile
+router.get('/profile', authController.showProfile);
+
+// Route for updating user profile information
+router.post('/update-profile', authController.updateProfile);
+
 module.exports = router;

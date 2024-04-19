@@ -7,61 +7,67 @@ if (!userId) {
 }
 
 // Handle login form submission
-document.getElementById('login-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    var username = document.getElementById('login-username').value;
-    var password = document.getElementById('login-password').value;
-    fetch('/user/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username: username, password: password }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.userId) {
-            console.log('User logged in:', data.userId);
-            localStorage.setItem('userId', data.userId); // Store user ID for session
-            window.location.href = 'user.html'; // Redirect to user page
-        } else {
-            console.error('Login failed:', data.error);
-        }
-    })
-    .catch((error) => {
-        console.error('Login error:', error);
+var loginForm = document.getElementById('login-form');
+if (loginForm) {
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        var username = document.getElementById('login-username').value;
+        var password = document.getElementById('login-password').value;
+        fetch('/user/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username: username, password: password }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.userId) {
+                console.log('User logged in:', data.userId);
+                localStorage.setItem('userId', data.userId);
+                window.location.href = 'user.html'; // Redirect to the user page
+            } else {
+                console.error('Login failed:', data.error);
+            }
+        })
+        .catch((error) => {
+            console.error('Login error:', error);
+        });
     });
-});
+}
 
 
 // Handle register form submission
-document.getElementById('register-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    var name = document.getElementById('register-name').value;
-    var username = document.getElementById('register-username').value;
-    var email = document.getElementById('register-email').value;
-    var password = document.getElementById('register-password').value;
-    fetch('/user/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name: name, username: username, email: email, password: password }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.userId) {
-            console.log('User registered:', data.userId);
-            localStorage.setItem('userId', data.userId); // Store user ID
-            window.location.href = 'user.html'; // Redirect to user page
-        } else {
-            console.error('Registration failed:', data.error);
-        }
-    })
-    .catch((error) => {
-        console.error('Registration error:', error);
+var registerForm = document.getElementById('register-form');
+if (registerForm) {
+    registerForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        var name = document.getElementById('register-name').value;
+        var username = document.getElementById('register-username').value;
+        var email = document.getElementById('register-email').value;
+        var password = document.getElementById('register-password').value;
+        fetch('/user/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name: name, username: username, email: email, password: password }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.userId) {
+                console.log('User registered:', data.userId);
+                localStorage.setItem('userId', data.userId);
+                window.location.href = 'user.html'; // Redirect to the user page
+            } else {
+                console.error('Registration failed:', data.error);
+            }
+        })
+        .catch((error) => {
+            console.error('Registration error:', error);
+        });
     });
-});
+}
 
 
 // Handle details form submission

@@ -18,5 +18,14 @@ router.post('/update-profile', authController.updateProfile);
 
 router.post('/update-diet', authController.updateDiet);
 
+router.post('/logout', function(req, res) {
+    req.session.destroy(function(err) {
+      if (err) {
+        console.log('Error destroying session: ', err);
+      }
+      res.redirect('/'); // Redirect to the home/login page
+    });
+  });
+  
 
 module.exports = router;

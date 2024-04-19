@@ -1,3 +1,11 @@
+// Retrieve userID from somewhere, possibly stored in localStorage after login
+const userId = localStorage.getItem('userId'); 
+
+if (!userId) {
+    console.error('No user ID found, redirecting to login');
+    // Redirect to login or handle appropriately
+}
+
 // Handle login form submission
 document.getElementById('login-form').addEventListener('submit', function(event) {
     event.preventDefault();
@@ -14,14 +22,17 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     .then(data => {
         if (data.userId) {
             console.log('User logged in:', data.userId);
+            localStorage.setItem('userId', data.userId); // Store user ID for session
+            window.location.href = 'user.html'; // Redirect to user page
         } else {
-            console.error('Error:', data.error);
+            console.error('Login failed:', data.error);
         }
     })
     .catch((error) => {
-        console.error('Error:', error);
+        console.error('Login error:', error);
     });
 });
+
 
 // Handle register form submission
 document.getElementById('register-form').addEventListener('submit', function(event) {
@@ -41,14 +52,17 @@ document.getElementById('register-form').addEventListener('submit', function(eve
     .then(data => {
         if (data.userId) {
             console.log('User registered:', data.userId);
+            localStorage.setItem('userId', data.userId); // Store user ID
+            window.location.href = 'user.html'; // Redirect to user page
         } else {
-            console.error('Error:', data.error);
+            console.error('Registration failed:', data.error);
         }
     })
     .catch((error) => {
-        console.error('Error:', error);
+        console.error('Registration error:', error);
     });
 });
+
 
 // Handle details form submission
 document.getElementById('details-form').addEventListener('submit', function(event) {
@@ -57,7 +71,7 @@ document.getElementById('details-form').addEventListener('submit', function(even
     var age = document.getElementById('age').value;
     var currentWeight = document.getElementById('current-weight').value;
     var desiredWeight = document.getElementById('desired-weight').value;
-    fetch('/user/:id', {
+    fetch(`/user/${userId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -77,25 +91,25 @@ document.getElementById('details-form').addEventListener('submit', function(even
 });
 
 // Get user details
-fetch('/user/:id')
+fetch(`/user/${userId}`)
     .then(response => response.json())
     .then(data => console.log('User details:', data))
     .catch((error) => console.error('Error:', error));
 
 // Get meal plans
-fetch('/user/:id/meal-plans')
+fetch(`/user/${userId}/meal-plans`)
     .then(response => response.json())
     .then(data => console.log('Meal plans:', data))
     .catch((error) => console.error('Error:', error));
 
 // Get exercise plans
-fetch('/user/:id/exercise-plans')
+fetch(`/user/${userId}/exercise-plans`)
     .then(response => response.json())
     .then(data => console.log('Exercise plans:', data))
     .catch((error) => console.error('Error:', error));
 
 // Get progress
-fetch('/user/:id/progress')
+fetch(`/user/${userId}/progress`)
     .then(response => response.json())
     .then(data => console.log('Progress:', data))
     .catch((error) => console.error('Error:', error));
@@ -105,7 +119,7 @@ document.getElementById('meal-plan-form').addEventListener('submit', function(ev
     event.preventDefault();
     var meal = document.getElementById('meal').value;
     var dayOfWeek = document.getElementById('day-of-week').value;
-    fetch('/user/:id/meal-plan', {
+    fetch(`/user/${userId}/meal-plan`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -129,7 +143,7 @@ document.getElementById('exercise-plan-form').addEventListener('submit', functio
     event.preventDefault();
     var exercise = document.getElementById('exercise').value;
     var dayOfWeek = document.getElementById('day-of-week').value;
-    fetch('/user/:id/exercise-plan', {
+    fetch(`/user/${userId}/exercise-plan`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -147,4 +161,3 @@ document.getElementById('exercise-plan-form').addEventListener('submit', functio
         console.error('Error:', error);
     });
 });
-

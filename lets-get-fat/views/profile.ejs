@@ -9,6 +9,7 @@
 </head>
 <body class="container">
   <h1 class="mt-4">Welcome, <%= user.name %>!</h1>
+  
   <form id="profileForm" class="mb-3">
     <input type="hidden" name="id" value="<%= user.id %>">
     <div class="mb-3">
@@ -29,6 +30,7 @@
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
+  
   <div id="successMessage" style="display:none;" class="alert alert-success">
     Profile updated successfully!
     <button id="allCarbDiet" class="btn btn-outline-primary">All Carb Diet</button>

@@ -53,13 +53,27 @@ exports.login = async (req, res) => {
 };
 
 
+  exports.showProfile = async (req, res) => {
+    if (!req.session.user) {
+        res.redirect('/login');
+        return;
+    }
 
+    try {
+        const weightData = await db.query(
+            'SELECT weight, updated_at FROM weight_history WHERE user_id = $1 ORDER BY updated_at ASC',
+            [req.session.user.id]
+        );
+        res.render('profile', {
+            user: req.session.user,
+            weightUpdates: weightData.rows
+        });
+    } catch (error) {
+        console.error('Failed to retrieve weight data:', error);
+        res.status(500).send('Failed to load weight data.');
+    }
+};
 
-// Display user profile
-exports.showProfile = (req, res) => {
-    // Assuming user data is stored in session or passed after login
-    res.render('profile', { user: req.session.user });
-  };
   
 // Update user profile
 exports.updateProfile = async (req, res) => {
@@ -89,4 +103,18 @@ exports.updateProfile = async (req, res) => {
   };
   
 
+exports.updateWeight = async (req, res) => {
+    const { id, current_weight } = req.body;
+    try {
+      // Update the current weight in the users table
+      await db.query('UPDATE users SET current_weight = $1 WHERE id = $2', [current_weight, id]);
 
+      // Insert new record into weight_history
+      await db.query('INSERT INTO weight_history (user_id, weight) VALUES ($1, $2)', [id, current_weight]);
+
+      res.redirect('/profile'); // Redirect back to profile with a success message or handle differently
+    } catch (error) {
+      console.error('Error updating current weight:', error);
+      res.status(500).send('Failed to update weight');
+    }
+};

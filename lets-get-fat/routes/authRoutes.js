@@ -18,6 +18,8 @@ router.post('/update-profile', authController.updateProfile);
 
 router.post('/update-diet', authController.updateDiet);
 
+router.post('/update-weight', authController.updateWeight);
+
 router.post('/logout', function(req, res) {
     req.session.destroy(function(err) {
       if (err) {
@@ -27,5 +29,6 @@ router.post('/logout', function(req, res) {
     });
   });
   
+
 
 module.exports = router;

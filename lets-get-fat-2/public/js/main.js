@@ -199,4 +199,39 @@ if (userId) {
 
 
 
+document.getElementById('carb-diet').addEventListener('click', function() {
+    fetch('/meal-plans?type=carb')
+        .then(response => response.json())
+        .then(data => {
+            // Handle the data here
+            console.log(data);
+        })
+        .catch(error => {
+            // Handle the error here
+            console.error('Error:', error);
+        });
+});
+
+
+document.getElementById('dessert-diet').addEventListener('click', function() {
+    fetch('/meal-plans?type=dessert')
+        .then(response => response.json())
+        .then(data => {
+            // Handle the data here
+            console.log(data);
+        })
+        .catch(error => {
+            // Handle the error here
+            console.error('Error:', error);
+        });
+});
+
+
+document.getElementById('logout').addEventListener('click', function() {
+    // Clear the user ID from localStorage
+    localStorage.removeItem('userId');
+
+    // Redirect to the login page
+    window.location.href = '/login';
+});
 

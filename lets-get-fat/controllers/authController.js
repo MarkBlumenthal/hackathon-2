@@ -2,25 +2,34 @@ const bcrypt = require('bcrypt');
 const db = require('../config/db');
 
 
+
+
 // Register User
 exports.register = async (req, res) => {
-    const { name, username, email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+  const { name, username, email, password, weight } = req.body; // Include weight in the destructure if it's part of your form
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-    try {
-        const userExists = await db.query('SELECT * FROM users WHERE username = $1 OR email = $2', [username, email]);
+  try {
+      // Check if user already exists
+      const userExists = await db.query('SELECT * FROM users WHERE username = $1 OR email = $2', [username, email]);
 
-        if (userExists.rows.length > 0) {
-            return res.render('index', { registerErrorMessage: 'Sorry, but you are already a client.' });
-        }
+      if (userExists.rows.length > 0) {
+          return res.render('index', { registerErrorMessage: 'Username or email already exists.' });
+      }
 
-        const newUser = await db.query('INSERT INTO users (name, username, email, password) VALUES ($1, $2, $3, $4) RETURNING *', [name, username, email, hashedPassword]);
-        req.session.user = newUser.rows[0]; // Store user information in session
-        res.redirect('/profile'); // Redirect to profile page after registration
-    } catch (error) {
-        console.error('Registration error:', error);
-        res.status(500).render('index', { registerErrorMessage: 'Error in registration process' });
-    }
+      // Insert new user with both current_weight and starting_weight set to the initial weight
+      const newUser = await db.query(
+          'INSERT INTO users (name, username, email, password, current_weight, starting_weight) VALUES ($1, $2, $3, $4, $5, $5) RETURNING *',
+          [name, username, email, hashedPassword, weight]
+      );
+
+      // Store user information in session and redirect to profile page
+      req.session.user = newUser.rows[0];
+      res.redirect('/profile');
+  } catch (error) {
+      console.error('Registration error:', error);
+      res.status(500).render('index', { registerErrorMessage: 'Error in registration process' });
+  }
 };
 
 
@@ -75,20 +84,29 @@ exports.login = async (req, res) => {
 };
 
   
-// Update user profile
+
 exports.updateProfile = async (req, res) => {
-    const { id, age, height, current_weight, desired_weight } = req.body;
-    try {
+  const { id, age, height, current_weight, desired_weight } = req.body;
+  try {
+      const userDetails = await db.query('SELECT starting_weight FROM users WHERE id = $1', [id]);
+      let startingWeight = userDetails.rows[0].starting_weight;
+
+      if (!startingWeight) { // Check if starting_weight has never been set
+          startingWeight = current_weight; // Set starting weight to current weight on first update
+          await db.query('UPDATE users SET starting_weight = $1 WHERE id = $2', [startingWeight, id]);
+      }
+
       await db.query(
-        'UPDATE users SET age = $1, height = $2, current_weight = $3, desired_weight = $4 WHERE id = $5',
-        [age, height, current_weight, desired_weight, id]
+          'UPDATE users SET age = $1, height = $2, current_weight = $3, desired_weight = $4 WHERE id = $5',
+          [age, height, current_weight, desired_weight, id]
       );
-      res.json({ message: 'Profile updated successfully' }); // Send JSON response
-    } catch (error) {
+      res.json({ message: 'Profile updated successfully', startingWeight: startingWeight }); // Include startingWeight in response for client-side logic
+  } catch (error) {
       console.error('Error updating profile:', error);
       res.status(500).json({ error: 'Failed to update profile' });
-    }
-  };
+  }
+};
+
 
   
   exports.updateDiet = async (req, res) => {
@@ -103,18 +121,21 @@ exports.updateProfile = async (req, res) => {
   };
   
 
+
+
+
 exports.updateWeight = async (req, res) => {
   const { id, current_weight } = req.body;
   try {
     // Update the current weight in the users table
     await db.query('UPDATE users SET current_weight = $1 WHERE id = $2', [current_weight, id]);
 
-    // Fetch the starting weight and desired weight for graphing
+    // Fetch the starting weight and desired weight
     const userDetails = await db.query('SELECT starting_weight, desired_weight FROM users WHERE id = $1', [id]);
 
     // Send the details back for graph update
     res.json({
-      startingWeight: userDetails.rows[0].starting_weight, // Fetches the preserved starting weight
+      startingWeight: userDetails.rows[0].starting_weight,
       updatedWeight: current_weight,
       desiredWeight: userDetails.rows[0].desired_weight
     });

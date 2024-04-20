@@ -3,32 +3,26 @@ const db = require('../config/db');
 
 
 
-
-// Register User
 exports.register = async (req, res) => {
-  const { name, username, email, password, weight } = req.body; // Include weight in the destructure if it's part of your form
+  const { name, username, email, password, weight } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
-      // Check if user already exists
-      const userExists = await db.query('SELECT * FROM users WHERE username = $1 OR email = $2', [username, email]);
+    const userExists = await db.query('SELECT * FROM users WHERE username = $1 OR email = $2', [username, email]);
+    if (userExists.rows.length > 0) {
+        return res.render('index', { registerErrorMessage: 'Username or email already exists.' });
+    }
 
-      if (userExists.rows.length > 0) {
-          return res.render('index', { registerErrorMessage: 'Username or email already exists.' });
-      }
+    const newUser = await db.query(
+        'INSERT INTO users (name, username, email, password, current_weight, starting_weight) VALUES ($1, $2, $3, $4, $5, $5) RETURNING *',
+        [name, username, email, hashedPassword, weight]
+    );
 
-      // Insert new user with both current_weight and starting_weight set to the initial weight
-      const newUser = await db.query(
-          'INSERT INTO users (name, username, email, password, current_weight, starting_weight) VALUES ($1, $2, $3, $4, $5, $5) RETURNING *',
-          [name, username, email, hashedPassword, weight]
-      );
-
-      // Store user information in session and redirect to profile page
-      req.session.user = newUser.rows[0];
-      res.redirect('/profile');
+    req.session.user = newUser.rows[0];
+    res.redirect('/profile');
   } catch (error) {
-      console.error('Registration error:', error);
-      res.status(500).render('index', { registerErrorMessage: 'Error in registration process' });
+    console.error('Registration error:', error);
+    res.status(500).render('index', { registerErrorMessage: 'Error in registration process' });
   }
 };
 
@@ -122,26 +116,40 @@ exports.updateProfile = async (req, res) => {
   
 
 
-
-
 exports.updateWeight = async (req, res) => {
   const { id, current_weight } = req.body;
-  try {
-    // Update the current weight in the users table
-    await db.query('UPDATE users SET current_weight = $1 WHERE id = $2', [current_weight, id]);
 
-    // Fetch the starting weight and desired weight
+  try {
+    // Fetch the current starting_weight from the database to check if it needs to be set
     const userDetails = await db.query('SELECT starting_weight, desired_weight FROM users WHERE id = $1', [id]);
+    let { starting_weight, desired_weight } = userDetails.rows[0];
+
+    // If starting_weight has never been set, set it now along with current_weight
+    if (starting_weight === null) {
+      await db.query('UPDATE users SET current_weight = $1, starting_weight = $1 WHERE id = $2', [current_weight, id]);
+      starting_weight = current_weight; // Since this is the first update, set starting weight to current weight
+    } else {
+      // Only update current_weight
+      await db.query('UPDATE users SET current_weight = $1 WHERE id = $2', [current_weight, id]);
+    }
 
     // Send the details back for graph update
     res.json({
-      startingWeight: userDetails.rows[0].starting_weight,
+      startingWeight: starting_weight,
       updatedWeight: current_weight,
-      desiredWeight: userDetails.rows[0].desired_weight
+      desiredWeight: desired_weight
     });
   } catch (error) {
     console.error('Error updating current weight:', error);
     res.status(500).send('Failed to update weight');
   }
 };
+
+
+
+
+
+
+
+
 

@@ -119,7 +119,7 @@
 <!-- Form for updating current weight -->
 <div class="update-weight-form">
   <h3>Update Your Current Weight</h3>
-  <form action="/update-weight" method="post">
+  <form id="updateWeightForm" action="/update-weight" method="post">
     <input type="hidden" name="id" value="<%= user.id %>">
     <div class="mb-3">
       <label for="updatedWeight" class="form-label">Current Weight (in kg):</label>
@@ -129,7 +129,11 @@
   </form>
 </div>
 
-
+<!-- Container for the weight history graph, initially hidden -->
+<div id="weightChartContainer" style="display: none;">
+  <h2>Your Weight History</h2>
+  <canvas id="weightChart"></canvas>
+</div>
 
 
   
@@ -179,7 +183,64 @@
     });
 </script>
 
+<script>
+  let weightChart; // Declare this outside to ensure it's accessible globally
+  
+  $(document).ready(function(){
+    $('#updateWeightForm').on('submit', function(e){
+      e.preventDefault();
+      var formData = $(this).serialize();
+      $.ajax({
+        url: '/update-weight',
+        type: 'POST',
+        data: formData,
+        success: function(response) {
+          console.log(response); // It's good to log this to see what data you're actually receiving
+          updateGraph(response.weightUpdates);
+          $('#weightChartContainer').show();
+        },
+        error: function() {
+          alert('Failed to update weight. Please try again.');
+        }
+      });
+    });
+  
+    function updateGraph(weightUpdates) {
+      const ctx = document.getElementById('weightChart').getContext('2d');
+      const labels = weightUpdates.map(update => new Date(update.updated_at).toLocaleDateString());
+      const data = weightUpdates.map(update => update.weight);
+  
+      // If a chart instance exists, destroy it before creating a new one
+      if (weightChart) {
+        weightChart.destroy(); // Only call destroy if weightChart is not undefined
+      }
+  
+      // Create a new chart instance
+      weightChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Weight (kg)',
+            data: data,
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: false
+            }
+          }
+        }
+      });
+    }
+  });
+  </script>
 
+  
 
 
   

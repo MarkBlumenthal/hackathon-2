@@ -103,18 +103,20 @@ exports.updateProfile = async (req, res) => {
   };
   
 
+
 exports.updateWeight = async (req, res) => {
-    const { id, current_weight } = req.body;
-    try {
-      // Update the current weight in the users table
-      await db.query('UPDATE users SET current_weight = $1 WHERE id = $2', [current_weight, id]);
+  const { id, current_weight } = req.body;
+  try {
+    // Update the current weight in the users table
+    await db.query('UPDATE users SET current_weight = $1 WHERE id = $2', [current_weight, id]);
 
-      // Insert new record into weight_history
-      await db.query('INSERT INTO weight_history (user_id, weight) VALUES ($1, $2)', [id, current_weight]);
-
-      res.redirect('/profile'); // Redirect back to profile with a success message or handle differently
-    } catch (error) {
-      console.error('Error updating current weight:', error);
-      res.status(500).send('Failed to update weight');
-    }
+    // Fetch updated weight history for the graph
+    const weightUpdates = await db.query('SELECT weight, updated_at FROM weight_history WHERE user_id = $1 ORDER BY updated_at ASC', [id]);
+    
+    // Redirect back or send JSON with data for the graph
+    res.json({ weightUpdates: weightUpdates.rows }); // Send updated weight data
+  } catch (error) {
+    console.error('Error updating current weight:', error);
+    res.status(500).send('Failed to update weight');
+  }
 };

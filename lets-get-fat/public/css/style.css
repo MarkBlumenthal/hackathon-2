@@ -2,10 +2,13 @@
 .form-container {
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  background-color: #fff;
+  background-color: #fdfdfd;
   border-radius: 8px;
   margin-top: 20px;
 }
 
-
+.card {
+  background-color: rgb(178, 206, 177);
+  
+}
 

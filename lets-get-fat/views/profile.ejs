@@ -140,6 +140,7 @@
   <canvas id="weightChart"></canvas>
 </div>
 
+<div id="weightMessage" class="alert" style="display:none;"></div>
 
   
   <script>
@@ -190,7 +191,7 @@
 
 
 
-  <script>
+  <!-- <script>
     $(document).ready(function(){
       window.weightChart = null; // Initialize the weight chart as null
     
@@ -246,10 +247,85 @@
         });
       }
     });
-    </script>
+    </script> -->
 
 
-
+    <script>
+      $(document).ready(function() {
+        window.weightChart = null; // Initialize the weight chart as null
+      
+        $('#updateWeightForm').on('submit', function(e) {
+          e.preventDefault();
+          var formData = $(this).serialize();
+          $.ajax({
+            url: '/update-weight',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+              updateGraph(response.startingWeight, response.updatedWeight, response.desiredWeight);
+              displayWeightMessage(response.updatedWeight, response.desiredWeight);
+              $('#weightChartContainer').show();
+            },
+            error: function() {
+              alert('Failed to update weight. Please try again.');
+            }
+          });
+        });
+      
+        function updateGraph(startingWeight, updatedWeight, desiredWeight) {
+          const ctx = document.getElementById('weightChart').getContext('2d');
+          if (window.weightChart !== null) {
+            window.weightChart.destroy(); // Only destroy if it exists
+          }
+          window.weightChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: ['Starting Weight', 'Updated Weight', 'Desired Weight'],
+              datasets: [{
+                label: 'Weight (kg)',
+                data: [startingWeight, updatedWeight, desiredWeight],
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(75, 192, 192, 0.2)'
+                ],
+                borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+        }
+      
+        function displayWeightMessage(updatedWeight, desiredWeight) {
+          updatedWeight = Number(updatedWeight);
+  desiredWeight = Number(desiredWeight);
+          const messageElement = document.getElementById('weightMessage');
+          if (updatedWeight < desiredWeight) {
+            messageElement.innerHTML = 'Come on, you can do better, you just need to eat more!';
+            messageElement.className = 'alert alert-warning';
+          } else if (updatedWeight === desiredWeight) {
+            messageElement.innerHTML = 'Amazing! your reached your fattest self. why not get fatter?';
+            messageElement.className = 'alert alert-success';
+          } else if (updatedWeight > desiredWeight) {
+            messageElement.innerHTML = 'Congrats, you are over your desired weight! You must be huge!';
+            messageElement.className = 'alert alert-success';
+          }
+          messageElement.style.display = 'block';
+        }
+      });
+      </script>
+      
  
   
   

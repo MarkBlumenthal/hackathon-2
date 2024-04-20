@@ -67,7 +67,7 @@ exports.showProfile = async (req, res) => {
   try {
       const userDetails = await db.query('SELECT * FROM users WHERE id = $1', [req.session.user.id]);
       const user = userDetails.rows[0];
-      const profileFilled = user.age && user.height && user.current_weight && user.desired_weight; // Assuming all these fields are required
+      const profileFilled = user.age && user.height && user.current_weight && user.desired_weight; 
 
       res.render('profile', {
           user: req.session.user,

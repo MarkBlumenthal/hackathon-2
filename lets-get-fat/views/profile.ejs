@@ -11,6 +11,9 @@
 </head>
 <body class="container">
     <h1 class=" text-center mt-4">Welcome, <%= user.name %>!</h1>
+    <h5 class="text-center mt-5">If you can dream it, you can do it</h5>
+    <div class="d-flex justify-content-center">
+    <img src="images/cartman-removebg-preview.png" class="img-fluid" style="max-height: 200px;" alt="cartman"></div>
     <% if (!profileFilled) { %>
       <form id="profileForm" class="mb-3">
         <input type="hidden" name="id" value="<%= user.id %>">
@@ -45,37 +48,37 @@
 
   <!-- diet plan tables -->
   <div id="allCarbDietTable" style="display:none;">
-    <h2>All Carb Diet Plan</h2>
+    <h2>&#x1F355; All Carb Diet Plan</h2>
     <table class="table">
       <thead>
         <tr><th>Day</th><th>Meal</th></tr>
       </thead>
       <tbody>
-        <tr><td>Day 1</td><td>Pasta</td></tr>
-        <tr><td>Day 2</td><td>Bread</td></tr>
-        <tr><td>Day 3</td><td>french frys</td></tr>
-        <tr><td>Day 4</td><td>pizza</td></tr>
-        <tr><td>Day 5</td><td>donuts</td></tr>
-        <tr><td>Day 6</td><td>Burgers</td></tr>
-        <tr><td>Day 7</td><td>Bonus: eat all 6 days today</td></tr> 
+        <tr><td>Day 1</td><td>&#x1F35D; Pasta</td></tr>
+        <tr><td>Day 2</td><td>&#x1F35E; Bread</td></tr>
+        <tr><td>Day 3</td><td>&#x1F35F; french frys</td></tr>
+        <tr><td>Day 4</td><td>&#x1F355; pizza</td></tr>
+        <tr><td>Day 5</td><td>&#x1F369; donuts</td></tr>
+        <tr><td>Day 6</td><td>&#x1F354; Burgers</td></tr>
+        <tr><td>Day 7</td><td>&#x1F37D;&#xFE0F; Bonus: eat all 6 days today</td></tr> 
       </tbody>
     </table>
   </div>
   
   <div id="allDessertDietTable" style="display:none;">
-    <h2>All Dessert Diet Plan</h2>
+    <h2>&#x1F9C1; All Dessert Diet Plan</h2>
     <table class="table">
       <thead>
         <tr><th>Day</th><th>Meal</th></tr>
       </thead>
       <tbody>
-        <tr><td>Day 1</td><td>Cake</td></tr>
-        <tr><td>Day 2</td><td>Ice Cream</td></tr>
-        <tr><td>Day 3</td><td>Pudding</td></tr>
-        <tr><td>Day 4</td><td>Candy</td></tr>
-        <tr><td>Day 5</td><td>Trifle</td></tr>
-        <tr><td>Day 6</td><td>5kg of sugar</td></tr>
-        <tr><td>Day 7</td><td>Bonus: eat all 6 days today</td></tr>  
+        <tr><td>Day 1</td><td>&#x1F370; Cake</td></tr>
+        <tr><td>Day 2</td><td>&#x1F366; Ice Cream</td></tr>
+        <tr><td>Day 3</td><td>&#x1F36E; Pudding</td></tr>
+        <tr><td>Day 4</td><td>&#x1F36C; Candy</td></tr>
+        <tr><td>Day 5</td><td>&#x1F967; Sweet Pies</td></tr>
+        <tr><td>Day 6</td><td>&#x1F964; 5kg of sugar with Soda</td></tr>
+        <tr><td>Day 7</td><td>&#x1F37D;&#xFE0F; Bonus: eat all 6 days today</td></tr>  
       </tbody>
     </table>
   </div>
@@ -188,67 +191,6 @@
       });
     });
 </script>
-
-
-
-  <!-- <script>
-    $(document).ready(function(){
-      window.weightChart = null; // Initialize the weight chart as null
-    
-      $('#updateWeightForm').on('submit', function(e){
-        e.preventDefault();
-        var formData = $(this).serialize();
-        $.ajax({
-          url: '/update-weight',
-          type: 'POST',
-          data: formData,
-          success: function(response) {
-            updateGraph(response.startingWeight, response.updatedWeight, response.desiredWeight);
-            $('#weightChartContainer').show();
-          },
-          error: function() {
-            alert('Failed to update weight. Please try again.');
-          }
-        });
-      });
-    
-      function updateGraph(startingWeight, updatedWeight, desiredWeight) {
-        const ctx = document.getElementById('weightChart').getContext('2d');
-        if (window.weightChart !== null) {
-          window.weightChart.destroy(); // Only destroy if it exists
-        }
-        window.weightChart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: ['Starting Weight', 'Updated Weight', 'Desired Weight'],
-            datasets: [{
-              label: 'Weight (kg)',
-              data: [startingWeight, updatedWeight, desiredWeight],
-              backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(75, 192, 192, 0.2)'
-              ],
-              borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(75, 192, 192, 1)'
-              ],
-              borderWidth: 1
-            }]
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true
-              }
-            }
-          }
-        });
-      }
-    });
-    </script> -->
-
 
     <script>
       $(document).ready(function() {

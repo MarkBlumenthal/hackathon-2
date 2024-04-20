@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controllers/authController');  // Adjust the path if necessary
+const authController = require('../controllers/authController');  
 
 // Use actual login and register methods from authController
 router.post('/login', authController.login);

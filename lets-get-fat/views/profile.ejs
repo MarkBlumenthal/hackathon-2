@@ -10,7 +10,7 @@
 
 </head>
 <body class="container">
-    <h1 class="mt-4">Welcome, <%= user.name %>!</h1>
+    <h1 class=" text-center mt-4">Welcome, <%= user.name %>!</h1>
     <% if (!profileFilled) { %>
       <form id="profileForm" class="mb-3">
         <input type="hidden" name="id" value="<%= user.id %>">
@@ -37,6 +37,8 @@
         Profile updated successfully!
       </div>
     <% } %>
+    
+    <h5 class="text-center mt-5">Select your preffered diet and we will generate a custom meal and exercise plan for you</h5>
     <button id="allCarbDiet" class="btn btn-outline-primary">All Carb Diet</button>
     <button id="allDessertDiet" class="btn btn-outline-secondary">All Dessert Diet</button>
   </div>
@@ -51,11 +53,11 @@
       <tbody>
         <tr><td>Day 1</td><td>Pasta</td></tr>
         <tr><td>Day 2</td><td>Bread</td></tr>
-        <tr><td>Day 3</td><td>Bread</td></tr>
-        <tr><td>Day 4</td><td>Bread</td></tr>
-        <tr><td>Day 5</td><td>Bread</td></tr>
-        <tr><td>Day 6</td><td>Bread</td></tr>
-        <tr><td>Day 7</td><td>Bread</td></tr> 
+        <tr><td>Day 3</td><td>french frys</td></tr>
+        <tr><td>Day 4</td><td>pizza</td></tr>
+        <tr><td>Day 5</td><td>donuts</td></tr>
+        <tr><td>Day 6</td><td>Burgers</td></tr>
+        <tr><td>Day 7</td><td>Bonus: eat all 6 days today</td></tr> 
       </tbody>
     </table>
   </div>
@@ -69,11 +71,11 @@
       <tbody>
         <tr><td>Day 1</td><td>Cake</td></tr>
         <tr><td>Day 2</td><td>Ice Cream</td></tr>
-        <tr><td>Day 2</td><td>Ice Cream</td></tr>
-        <tr><td>Day 2</td><td>Ice Cream</td></tr>
-        <tr><td>Day 2</td><td>Ice Cream</td></tr>
-        <tr><td>Day 2</td><td>Ice Cream</td></tr>
-        <tr><td>Day 2</td><td>Ice Cream</td></tr>  
+        <tr><td>Day 3</td><td>Pudding</td></tr>
+        <tr><td>Day 4</td><td>Candy</td></tr>
+        <tr><td>Day 5</td><td>Trifle</td></tr>
+        <tr><td>Day 6</td><td>5kg of sugar</td></tr>
+        <tr><td>Day 7</td><td>Bonus: eat all 6 days today</td></tr>  
       </tbody>
     </table>
   </div>
@@ -86,13 +88,13 @@
         <tr><th>Day</th><th>Exercise</th></tr>
       </thead>
       <tbody>
-        <tr><td>Day 1</td><td>30 min run</td></tr>
-        <tr><td>Day 2</td><td>15 min cycling</td></tr>
-        <tr><td>Day 3</td><td>15 min cycling</td></tr>
-        <tr><td>Day 4</td><td>15 min cycling</td></tr>
-        <tr><td>Day 5</td><td>15 min cycling</td></tr>
-        <tr><td>Day 6</td><td>15 min cycling</td></tr>
-        <tr><td>Day 7</td><td>15 min cycling</td></tr> 
+        <tr><td>Day 1</td><td>watch TV for 20 hours</td></tr>
+        <tr><td>Day 2</td><td>20 bites of fudge between meals</td></tr>
+        <tr><td>Day 3</td><td>video games for 20 hours</td></tr>
+        <tr><td>Day 4</td><td>order pizza online</td></tr>
+        <tr><td>Day 5</td><td>challenge yourself to eat while showering</td></tr>
+        <tr><td>Day 6</td><td>repeat day 1 and day 2</td></tr>
+        <tr><td>Day 7</td><td>repeat day 3 and day 4</td></tr> 
       </tbody>
     </table>
   </div>
@@ -105,13 +107,13 @@
         <tr><th>Day</th><th>Exercise</th></tr>
       </thead>
       <tbody>
-        <tr><td>Day 1</td><td>20 min yoga</td></tr>
-        <tr><td>Day 2</td><td>30 min brisk walk</td></tr>
-        <tr><td>Day 3</td><td>30 min brisk walk</td></tr>
-        <tr><td>Day 4</td><td>30 min brisk walk</td></tr>
-        <tr><td>Day 5</td><td>30 min brisk walk</td></tr>
-        <tr><td>Day 6</td><td>30 min brisk walk</td></tr>
-        <tr><td>Day 7</td><td>30 min brisk walk</td></tr>
+        <tr><td>Day 1</td><td>brush teeth with syrup</td></tr>
+        <tr><td>Day 2</td><td>never leave the bed</td></tr>
+        <tr><td>Day 3</td><td>video games for 20 hours</td></tr>
+        <tr><td>Day 4</td><td>watch TV for 20 hours</td></tr>
+        <tr><td>Day 5</td><td>challenge yourself to drink sugar</td></tr>
+        <tr><td>Day 6</td><td>repeat day 1 and day 2</td></tr>
+        <tr><td>Day 7</td><td>repeat day 3 and day 4</td></tr>
       </tbody>
     </table>
   </div>
@@ -121,6 +123,7 @@
 <!-- Form for updating current weight -->
 <div class="update-weight-form">
   <h3>Update Your Current Weight</h3>
+  <h5>And check out your personalized weight graph below to track your progress</h5>
   <form id="updateWeightForm" action="/update-weight" method="post">
     <input type="hidden" name="id" value="<%= user.id %>">
     <div class="mb-3">
@@ -252,7 +255,7 @@
   
  
 <form action="/logout" method="post">
-    <button type="submit">Logout</button>
+    <button type="submit" class="btn btn-success">Logout</button>
   </form>
   
 </body>

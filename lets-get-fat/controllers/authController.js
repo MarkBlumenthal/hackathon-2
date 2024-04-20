@@ -56,26 +56,29 @@ exports.login = async (req, res) => {
 };
 
 
-  exports.showProfile = async (req, res) => {
-    if (!req.session.user) {
-        res.redirect('/login');
-        return;
-    }
 
-    try {
-        const weightData = await db.query(
-            'SELECT weight, updated_at FROM weight_history WHERE user_id = $1 ORDER BY updated_at ASC',
-            [req.session.user.id]
-        );
-        res.render('profile', {
-            user: req.session.user,
-            weightUpdates: weightData.rows
-        });
-    } catch (error) {
-        console.error('Failed to retrieve weight data:', error);
-        res.status(500).send('Failed to load weight data.');
-    }
+
+exports.showProfile = async (req, res) => {
+  if (!req.session.user) {
+      res.redirect('/login');
+      return;
+  }
+
+  try {
+      const userDetails = await db.query('SELECT * FROM users WHERE id = $1', [req.session.user.id]);
+      const user = userDetails.rows[0];
+      const profileFilled = user.age && user.height && user.current_weight && user.desired_weight; // Assuming all these fields are required
+
+      res.render('profile', {
+          user: req.session.user,
+          profileFilled: profileFilled
+      });
+  } catch (error) {
+      console.error('Failed to retrieve user data:', error);
+      res.status(500).send('Failed to load profile.');
+  }
 };
+
 
   
 

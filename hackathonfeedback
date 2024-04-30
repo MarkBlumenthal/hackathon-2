@@ -1,0 +1,12 @@
+**Student: Mark Blumenthal**
+**Project: Let's Get Fat - A Diet and Exercise Parody Website**
+
+- The project demonstrates proficiency in developing a parody website aimed at humorously encouraging weight gain through a combination of diet plans and exercise suggestions.
+- Notably, the website effectively utilizes Express.js for server-side routing and handling HTTP requests. Session management with Express Session enhances user experience by maintaining user authentication state.
+- However, the code could benefit from further organization and separation of concerns, particularly by modularizing routes and controllers to improve code readability and maintainability.
+
+**Express.js Routing**: 8/10
+**Session Management**: 7/10
+**Code Organization**: 6/10
+
+**Overall: 7/10**
